@@ -1,6 +1,7 @@
 # Troldmand v1.0.0 (Danish QSAR Batch Bot)
 
 Author: Tom Burns (github.com/tomdburns)
+
 Date  : August 31st, 2023
 
 Troldmand is a bot written in python to automate a batch mode for the Danish QSAR models:
