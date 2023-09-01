@@ -4,7 +4,7 @@
 ================================================================
 Troldmand v1.0.0
 
-Author: Tom Burns (tom.burns@ec.gc.ca)
+Author: Tom Burns (github.com/tomdburns)
 Date  : August 31st, 2023
 ================================================================
 
@@ -40,4 +40,4 @@ pip install numpy
 
 ================================================================
 
-If you have any questions, contact Tom Burns: tom.burns@ec.gc.ca
+If you have any questions, contact Tom Burns: github.com/tomdburns

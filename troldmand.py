@@ -22,6 +22,7 @@ from selenium.webdriver.support.select import Select
 
 __VERSION__ = (1,0,0)
 file_path   = '\\'.join(os.path.realpath(__file__).split('\\')[:-1])
+#file_path = '.'
 
 
 class Paths(object):
@@ -117,7 +118,6 @@ class Options(object):
         print('\nOutfile:\t', self.opts_outfile, '\tusage: -o $FILEPATH')
         print('\t\t (default: $INFILE.csv)')
         print('\nHelp   :\t', self.help_args)
-        print('\n\nFor questions contact Tom Burns (tom.burns@ec.gc.ca)\n')
         print('='*80)
         exit()
 
