@@ -14,13 +14,14 @@ import numpy as np
 import pandas as pd
 from time import sleep
 from sys import argv, exit
+from random import randint
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 
 
-__VERSION__ = (1,1,2)
+__VERSION__ = (1,2,1)
 file_path   = '\\'.join(os.path.realpath(__file__).split('\\')[:-1])
 #file_path = '.'
 
@@ -70,6 +71,9 @@ class Options(object):
         self.limit     = False
         self.timeout   = 10
         self.pause     = 5
+        self.sleep     = True
+        self.sleepmax  = 120
+        self.sleepmin  = 5
         self.url       = 'https://qsarmodels.food.dtu.dk/runmodel/index.html'
         self.models    = [_m.strip() for _m in open('%s\\models.ini' % file_path, 'r').readlines()]
         self.import_arguments()
@@ -178,15 +182,25 @@ def run(options, smiles, paths):
     """run the calculations"""
 
     results = {}
+    first   = True
 
     for smi in smiles:
+
+        # This is a random sleep timer
+        if first:
+            first = False
+        elif options.sleep:
+            print('-'*80)
+            sleep_time = rsleep(options)
+            print('\nCode is going to sleep for %i seconds.' % sleep_time)
+            sleep(sleep_time)
+
         # Step 1: Connect to the website
         print('\nPython connecting to browser\n')
         browser = webdriver.Edge()
         browser.maximize_window()
         browser.get(options.url)
 
-        print('\nAccepting terms of use\n')
         # Accept the terms of use
         accept = browser.find_element(By.CLASS_NAME, paths.get('accept'))
         accept.click()
@@ -288,6 +302,11 @@ def run(options, smiles, paths):
     return results
 
 
+def rsleep(options):
+    """generate a random sleep interval"""
+    return max(options.sleepmin, min(options.sleepmax, randint(options.sleepmin, options.sleepmax)))
+
+
 def welcome(options):
     """displays the welcome message"""
     print('='*100)
@@ -324,5 +343,6 @@ def main():
 
 if __name__ in '__main__':
     main()
+    print('='*80)
     print('\nCode terminated normally.')
     input('\nThis window can be closed.\n')
