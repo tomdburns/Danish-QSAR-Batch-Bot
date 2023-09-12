@@ -39,18 +39,18 @@ needing the command line.
 
 There are several models this code is compatible with run via the Danish QSAR Website:
 
-*ER alpha binding, all (human in vitro)           
-*ER alpha binding, balanced (human in vitro)      
-*ER alpha activation (human in vitro)             
-*ER Activation (in vitro, CERAPP data)            
-*AR inhibition (human in vitro)                   
-*AR binding (in vitro, CoMPARA data)              
-*AR activation (in vitro, CoMPARA data)           
-*AR inhibition (in vitro, CoMPARA data)           
-*Thyroperoxidase (TPO) inhibition QSAR1 (in vitro)
-*Thyroperoxidase (TPO) inhibition QSAR2 (in vitro)
-*Sodium/iodide symporter (NIS), higher sensitivity
-*Sodium/iodide symporter (NIS), higher specificity
+* ER alpha binding, all (human in vitro)           
+* ER alpha binding, balanced (human in vitro)      
+* ER alpha activation (human in vitro)             
+* ER Activation (in vitro, CERAPP data)            
+* AR inhibition (human in vitro)                   
+* AR binding (in vitro, CoMPARA data)              
+* AR activation (in vitro, CoMPARA data)           
+* AR inhibition (in vitro, CoMPARA data)           
+* Thyroperoxidase (TPO) inhibition QSAR1 (in vitro)
+* Thyroperoxidase (TPO) inhibition QSAR2 (in vitro)
+* Sodium/iodide symporter (NIS), higher sensitivity
+* Sodium/iodide symporter (NIS), higher specificity
 
 To select the models being run, change the models specified in models.ini
 
