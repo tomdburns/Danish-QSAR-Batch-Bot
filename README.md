@@ -1,4 +1,4 @@
-# Troldmand v1.1.0 (Danish QSAR Batch Bot)
+# Troldmand v1.1.2 (Danish QSAR Batch Bot)
 
 Author: Tom Burns (github.com/tomdburns)
 
