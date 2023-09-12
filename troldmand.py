@@ -12,15 +12,15 @@ Date  : August 31st, 2023
 import os
 import numpy as np
 import pandas as pd
-from sys import argv
 from time import sleep
+from sys import argv, exit
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 
-__VERSION__ = (1,1,0)
+__VERSION__ = (1,1,1)
 file_path   = '\\'.join(os.path.realpath(__file__).split('\\')[:-1])
 #file_path = '.'
 
