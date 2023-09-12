@@ -6,7 +6,7 @@ and manually inputs and executes the models using
 normal browser operations
 
 Author: Tom Burns
-Date  : August 31st, 2023
+Date  : September 12th, 2023
 """
 
 import os
@@ -20,7 +20,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 
-__VERSION__ = (1,1,1)
+__VERSION__ = (1,1,2)
 file_path   = '\\'.join(os.path.realpath(__file__).split('\\')[:-1])
 #file_path = '.'
 
@@ -64,6 +64,7 @@ class Options(object):
         self.args      = args
         self.version   = __VERSION__
         self.infile    = '%s\\SMILES.txt' % file_path
+        self.wizard    = '%s\\images\\wizard.txt' % file_path
         self.batch     = True
         self.ofile     = None
         self.limit     = False
@@ -287,15 +288,41 @@ def run(options, smiles, paths):
     return results
 
 
+def welcome(options):
+    """displays the welcome message"""
+    print('='*100)
+    print('Troldmand (v%s) - Danish QSAR Batch Bot' % '.'.join([str(vi) for vi in __VERSION__]))
+    print('-'*100)
+    wizz = open(options.wizard, 'r').readlines()
+    for line in wizz:
+        print(line.strip())
+    print('-'*100)
+    print('Author: Tom Burns')
+    print('='*100)
+    print('Options Selected:\n')
+    print('Input File        :', options.infile)
+    print('Output File       :', options.ofile, '\n')
+    print('Models Selected   :')
+    for model in options.models:
+        print('\t>', model)
+    smi_list = [smi.strip() for smi in open(options.infile, 'r').readlines()]
+    print('\nRunning %i SMILES :' % len(smi_list))
+    for smi in smi_list :
+        print('\t>', smi)
+    print('='*100)
+
+
 def main():
     """main"""
     options = Options()
+    welcome(options)
     results = run(options, import_smiles(options), Paths())
     results = format_results(results, options)
     results.to_csv(options.ofile, index=False)
     print('\n', options.ofile, 'written')
-                
+
 
 if __name__ in '__main__':
     main()
     print('\nCode terminated normally.')
+    input('\nThis window can be closed.\n')
