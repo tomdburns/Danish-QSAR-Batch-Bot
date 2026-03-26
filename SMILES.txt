@@ -1,2 +1,1 @@
-C=1C=CC=CC1
-C=1C=CC=CC1O
+c1cccccc1

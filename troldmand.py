@@ -10,6 +10,7 @@ Date  : September 12th, 2023
 """
 
 import os
+import webbrowser
 import numpy as np
 import pandas as pd
 from time import sleep
@@ -18,10 +19,11 @@ from random import randint
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.edge.service import Service
 from selenium.webdriver.support.select import Select
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
-
-__VERSION__ = (1,2,1)
+__VERSION__ = (1,2,3)
 file_path   = '\\'.join(os.path.realpath(__file__).split('\\')[:-1])
 #file_path = '.'
 
@@ -29,7 +31,7 @@ file_path   = '\\'.join(os.path.realpath(__file__).split('\\')[:-1])
 class Paths(object):
     """gets the paths needed to find the elements on the webpage"""
     
-    def __init__(self, default='%s\\xpaths.ini' % file_path):
+    def __init__(self, default='%s\\data\\xpaths.ini' % file_path):
         """initializes script"""
         self.ini   = default
         self.paths = {}
@@ -75,7 +77,7 @@ class Options(object):
         self.sleepmax  = 120
         self.sleepmin  = 5
         self.url       = 'https://qsarmodels.food.dtu.dk/runmodel/index.html'
-        self.models    = [_m.strip() for _m in open('%s\\models.ini' % file_path, 'r').readlines()]
+        self.models    = [_m.strip() for _m in open('%s\\data\\models.ini' % file_path, 'r').readlines()]
         self.import_arguments()
         self.import_modelpaths()
 
@@ -111,7 +113,7 @@ class Options(object):
     def import_modelpaths(self):
         """imports a full list of model paths"""
         try:
-            _mfile = open('modelxpaths.ini', 'r').readlines()
+            _mfile = open('data\\modelxpaths.ini', 'r').readlines()
         except FileNotFoundError:
             print('FATAL ERROR: modelxpaths.ini file not found!')
             exit()
@@ -197,9 +199,21 @@ def run(options, smiles, paths):
 
         # Step 1: Connect to the website
         print('\nPython connecting to browser\n')
-        browser = webdriver.Edge()
-        browser.maximize_window()
-        browser.get(options.url)
+        #service = Service(EdgeChromiumDriverManager().install())
+        service = Service(r'edgedriver\msedgedriver.exe')
+        #browser = webdriver.Edge()
+        try:
+            browser = webdriver.Edge(service=service)
+            browser.maximize_window()
+            browser.get(options.url)
+        except:
+            print('\n!! FATAL ERROR: webdriver out of date.')
+            print('!!              Download the new driver and put the exe file in the edgedriver folder:')
+            print('!!              https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver')
+            print('')
+            webbrowser.open('https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver')
+            input('Press Enter to exit program')
+            exit()
 
         # Accept the terms of use
         accept = browser.find_element(By.CLASS_NAME, paths.get('accept'))
@@ -254,19 +268,19 @@ def run(options, smiles, paths):
         while running:
             status = browser.find_element(By.XPATH, paths.get('status'))
             if 'processing' in str(status.text).lower():
-                print('Calculation still running after %i seconds' % total)
+                print(f'\rCalculation still running after %i seconds                   ' % total, end='', flush=True)
                 total += tstep
                 sleep(tstep)
             else:
-                print('Calculation finished after %i seconds' % total)
+                print(f'\rCalculation finished after %i seconds                   ' % total, end='', flush=True)
                 endok = browser.find_element(By.XPATH, paths.get('endok'))
                 endok.click()
                 break
             if total >= timeout and options.limit:
-                print("Calculation timed out after %i seconds" % timeout)
+                print(f"Calculation timed out after %i seconds                   " % timeout, end='', flush=True)
                 running = False
-        if total < timeout:
-            print("Calculation successful")
+        if total < timeout or not options.limit:
+            print("\n\n\tCalculation Successful!")
 
         print('\nformatting results\n')
         # Extract the results from the table
